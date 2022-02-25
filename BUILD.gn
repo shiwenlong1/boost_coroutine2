@@ -1,0 +1,33 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+executable("hello") {
+  sources = [ "hello.cxx" ]
+
+  deps = [
+    ":hello_shared",
+    ":hello_static",
+  ]
+
+  libs = [
+    "/usr/lib/x86_64-linux-gnu/libboost_coroutine.so",
+    "/usr/lib/x86_64-linux-gnu/libboost_context.so",
+  ]
+}
+
+shared_library("hello_shared") {
+  sources = [
+    "hello_shared.cxx",
+    "hello_shared.h",
+  ]
+
+  defines = [ "HELLO_SHARED_IMPLEMENTATION" ]
+}
+
+static_library("hello_static") {
+  sources = [
+    "hello_static.cxx",
+    "hello_static.h",
+  ]
+}

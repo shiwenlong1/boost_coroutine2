@@ -1,0 +1,25 @@
+ninja_required_version = 1.7.2
+
+rule gn
+  command = ../../../../usr/bin/gn --root=./.. -q --regeneration gen .
+  pool = console
+  description = Regenerating ninja files
+
+build build.ninja: gn
+  generator = 1
+  depfile = build.ninja.d
+
+subninja toolchain.ninja
+
+build hello_shared: phony ./libhello_shared.so
+build hello_static: phony obj/libhello_static.a
+build $:hello: phony hello
+build $:hello_shared: phony ./libhello_shared.so
+build $:hello_static: phony obj/libhello_static.a
+
+build all: phony $
+    hello $
+    ./libhello_shared.so $
+    obj/libhello_static.a
+
+default all

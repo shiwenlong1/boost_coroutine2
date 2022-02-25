@@ -1,0 +1,16 @@
+defines =
+include_dirs =
+cflags = -fPIC -pthread
+cflags_cc =
+target_out_dir = obj
+target_output_name = hello
+
+build obj/hello.hello.o: cxx ../hello.cxx
+
+build hello: link obj/hello.hello.o ./libhello_shared.so obj/libhello_static.a | ../../../../usr/lib/x86_64-linux-gnu/libboost_coroutine.so ../../../../usr/lib/x86_64-linux-gnu/libboost_context.so
+  ldflags = -Wl,-rpath=\$$ORIGIN/ -Wl,-rpath-link=
+  libs = /usr/lib/x86_64-linux-gnu/libboost_coroutine.so /usr/lib/x86_64-linux-gnu/libboost_context.so
+  frameworks =
+  swiftmodules =
+  output_extension = 
+  output_dir = .
