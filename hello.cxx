@@ -15,22 +15,48 @@ void foo(boost::coroutines2::coroutine<int>::push_type &sink)
     sink(3); // push {3} back to main-context
 }
 
+void foo1(boost::coroutines2::coroutine<std::string>::pull_type &source)
+{
+    int num = 1;
+    std::cout << " source1: " << num << "   " << source.get() << std::endl;
+    source();
+    std::cout << " source2: " << num << "   " << source.get() << std::endl;
+    source();
+    std::cout << " source3: " << num << "   " << source.get() << std::endl;
+    source();
+}
+
 int main(int argc, char *argv[])
 {
     std::string str1("hello");
     std::string str2("world");
-    std::cout<< "start corountine" << std::endl;
+    std::cout << "start corountine" << std::endl;
     /*
-    * 主程序中  使用 pull_type 那么就是从 协程中 拉  数据 类型 git的 pull 与 push
-    * 这里使用 pull_type 会立即调用一次协程foo执行， foo中 在sink(1)将执行权让给 主程序
-    */
+     * 主程序中  使用 pull_type 那么就是从 协程中 拉  数据 类型 git的 pull 与 push
+     * 这里使用 pull_type 会立即调用一次协程foo执行， foo中 在sink(1)将执行权让给 主程序
+     */
+    /*
     boost::coroutines2::coroutine<int>::pull_type source(foo);
-    std::cout<< "start while" << std::endl;
-    while (source) {
+    std::cout << "start while" << std::endl;
+    while (source)
+    {
         int ret = source.get(); // pushed data,that is the argument of sink()
         std::cout << "move to coroutine-function " << ret << std::endl;
         source(); // context-switch to coroutine-function
         std::cout << "back from coroutine-function " << std::endl;
     }
+    */
+    int i = 0;
+    const char * str[4] = {"hello", "world", "GN", "TEST"};
+    boost::coroutines2::coroutine<std::string>::push_type sink(foo1);
+    std::cout << "start while" << std::endl;
+    while (sink)
+    {
+        std::cout << "move to coroutine-function " << i << std::endl;
+        sink(str[i]);
+        std::cout << "back from coroutine-function " << i << std::endl;
+        i++;
+    }
+
     return 0;
 }
