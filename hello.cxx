@@ -47,11 +47,10 @@ int main(int argc, char *argv[])
     }
     */
     int i = 0;
-    const char * str[4] = {"hello", "world", "GN", "TEST"};
+    const char *str[4] = {"hello", "world", "GN", "TEST"};
     boost::coroutines2::coroutine<std::string>::push_type sink(foo1);
     std::cout << "start while" << std::endl;
-    while (sink)
-    {
+    while (sink) {
         std::cout << "move to coroutine-function " << i << std::endl;
         sink(str[i]);
         std::cout << "back from coroutine-function " << i << std::endl;

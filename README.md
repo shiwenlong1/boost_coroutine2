@@ -1,3 +1,5 @@
+sudo apt-get install libboost-all-dev
+
 # GN Simple Build Example
 
 This is an example directory structure that compiles some simple targets using
